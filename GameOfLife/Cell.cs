@@ -8,5 +8,10 @@ namespace GameOfLife
       {
          Alive = alive;
       }
+
+      public override string ToString()
+      {
+         return Alive ? "o" : "·";
+      }
    }
 }

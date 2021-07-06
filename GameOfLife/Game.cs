@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace GameOfLife
 {
-   public class Map
+   public class Game
    {
       private Cell[,] Cells { get; set; }
       private int MaxRow { get; set; }
       private int MaxCol { get; set; }
 
-      public Map(int[,] map)
+      public Game(int[,] map)
       {
          MaxRow = map.GetLength(0) - 1;
          MaxCol = map.GetLength(1) - 1;

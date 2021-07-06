@@ -7,16 +7,16 @@ namespace GameOfLife.Tests
         [Fact]
         public void CellWithOneAliveNeighboursDies()
         {
-           Map map = new Map(new int[,]
+           Game game = new Game(new int[,]
            {
               { 0, 0, 0 },
               { 0, 1, 0 },
               { 0, 1, 0 }
            });
 
-           map.Run();
+           game.Run();
 
-           Assert.False(map.Get(1, 1).Alive);
+           Assert.False(game.Get(1, 1).Alive);
         }
     }
 }

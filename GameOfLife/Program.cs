@@ -6,7 +6,7 @@ namespace GameOfLife
    {
       static void Main(string[] args)
       {
-         Game game = new Game(new int[,]
+         Game game = GameFactory.From(new int[,]
          {
             { 0, 1, 0, 0 },
             { 1, 1, 0, 1 },

@@ -7,14 +7,12 @@ namespace GameOfLife.Tests
         [Fact]
         public void CellWithOneAliveNeighboursDies()
         {
-           Game game = new Game(new int[,]
+           Game game = GameFactory.From(new int[,]
            {
               { 0, 0, 0 },
               { 0, 1, 0 },
               { 0, 1, 0 }
-           });
-
-           game.Run();
+           }).Run();
 
            Assert.False(game.Get(1, 1).Alive);
         }

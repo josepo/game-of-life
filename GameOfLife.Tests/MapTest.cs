@@ -16,7 +16,7 @@ namespace GameOfLife.Tests
 
            map.Run();
 
-           Assert.Equal(0, map.Get(1, 1));
+           Assert.False(map.Get(1, 1).Alive);
         }
     }
 }

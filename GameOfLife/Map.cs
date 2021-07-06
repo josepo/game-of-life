@@ -1,64 +1,84 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace GameOfLife
 {
    public class Map
    {
-      private int[,] _map;
+      private Cell[,] Cells { get; set; }
+      private int MaxRow { get; set; }
+      private int MaxCol { get; set; }
 
       public Map(int[,] map)
       {
-         _map = map;
+         MaxRow = map.GetLength(0) - 1;
+         MaxCol = map.GetLength(1) - 1;
+
+         Cells = new Cell[MaxRow + 1, MaxCol + 1];
+
+         for (int i = 0; i <= MaxRow; i++)
+            for (int j = 0; j <= MaxCol; j++)
+            {
+               bool isAlive = (map[i, j] == 1);
+
+               Cells[i, j] = new Cell(isAlive);
+            }
       }
 
       public void Run()
       {
-         int[,] newMap = (int[,]) _map.Clone();
+         Cell[,] newCells = new Cell[MaxRow + 1, MaxCol + 1];
 
-         for (int i = 0; i < newMap.GetLength(0); i++)
-            for (int j = 0; j < newMap.GetLength(1); j++)
+         for (int i = 0; i <= MaxRow; i++)
+            for (int j = 0; j <= MaxCol; j++)
             {
-               int alive = GetAliveNeighbors(i, j);
+               int alive = Neighbors(i, j).Count(n => n.Alive);
 
-               newMap[i, j] = (alive < 2) ? 0 : 1;
+               newCells[i, j] = new Cell(alive >= 2);
             }
 
-         _map = newMap;
+         Cells = newCells;
       }
 
-      private int GetAliveNeighbors(int i, int j)
+      private List<Cell> Neighbors(int i, int j)
       {
-         int alive = 0;
+         List<Cell> neighbors = new List<Cell>();
 
-         for (int r = i - 1; r <= i + 1; r++)
-            for (int s = j - 1; s <= j + 1; s++)
+         int rowStart = (i == 0) ? 0 : (i - 1);
+         int rowEnd = (i == MaxRow) ? MaxRow : (i + 1);
+
+         int colStart = (j == 0) ? 0 : (j - 1);
+         int colEnd = (j == MaxCol) ? MaxCol : (j + 1);
+
+         for (int row = rowStart; row <= rowEnd; row++)
+            for (int col = colStart; col <= colEnd; col++)
             {
-               if (
-                  (r > 0) && (r < _map.GetLength(0)) &&
-                  (s > 0) && (s < _map.GetLength(1)) && 
-                  ((r != i) || (s != j)) &&
-                  (_map[r, s] == 1))
+               if ((row != i) || (col != j))
                {
-                  alive++;
+                  Cell cell = Get(row, col);
+
+                  neighbors.Add(cell);
                }
             }
 
-         return alive;
+         return neighbors;
       }
 
-      public int Get(int i, int j)
+      public Cell Get(int i, int j)
       {
-         return _map[i, j];
+         return Cells[i, j];
       }
 
       public override string ToString()
       {
          string result = "";
 
-         for (int i = 0; i < _map.GetLength(0); i++)
+         for (int i = 0; i <= MaxRow; i++)
          {
             result += "\n";
 
-            for(int j = 0; j < _map.GetLength(1); j++)
-               result += _map[i, j] + "  ";
+            for(int j = 0; j <= MaxCol; j++)
+               result += Cells[i, j] + "  ";
          }
 
          return result;
